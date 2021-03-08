@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gameupdown</title>
+    <style>
+        
+        .container{
+            height: 100vh;
+            background-color: tomato;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .flex{
+            display: flex;
+        }
+        .box{
+            display: flex;
+            height: 6rem;
+            width: 6rem;
+            background-color: wheat;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="container"></div>
+    </div>
+
+    <script>
+       let board=[['a','b','c'],['d','f','h'],['g','e','']];
+       let board2=[['a','b','c'],['d','e','f'],['g','h','']];
+       let container = document.querySelector(".container");
+       function init(){
+           let html="";
+           for(let i=0; i<board.length; i++){
+               html+='<div class="flex">';
+                for(let j=0; j<board[i].length; j++){
+                    let content = board[i][j];
+                    html+=`<div class="box">${content}</div>`;
+                }
+                html+="</div>";
+           }
+           container.innerHTML=html;
+       }
+       init();
+       let offsets = {
+           "ArrowLeft":[0,-1],"ArrowRight":[0,1], "ArrowDown":[1,0], "ArrowUp":[-1,0]
+       }
+       let [posx,posy] = [2,2];
+       document.onkeydown = function(e){
+           let a = offsets[e.key];
+           if(!a){
+               return;
+           }
+           let [x,y] = a;
+           let [newx,newy] = [posx+x,posy+y];
+           if(newx<0 || newy<0 || newx>=board.length || newy>=board[posx].length){
+               return;
+           }
+           let temp = board[newx][newy];
+           board[newx][newy] =board[posx][posy];
+           board[posx][posy] =temp;
+           posx = newx; posy = newy;
+           init();
+           if (board[0][0]==board2[0][0]&&board[0][1]==board2[0][1]&&board[0][2]==board2[0][2]&&board[1][0]==board2[1][0]&&board[1][1]==board2[1][1]&&board[1][2]==board2[1][2]&&board[2][0]==board2[2][0]&&board[2][1]==board2[2][1]&&board[2][2]==board2[2][2]) {
+                alert("you won");            
+           }
+        }
+    </script>
+</body>
+</html>
